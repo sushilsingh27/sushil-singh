@@ -1,0 +1,47 @@
+{
+	"apiVersion": "v1",
+	"kind": "Service",
+	"metadata": {
+		"annotations": {
+			"fabric8.io/iconUrl": "img/icons/spring-boot.svg",
+			"fabric8.io/scm-tag": "HEAD",
+			"fabric8.io/scm-url": "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/spring-boot-docker-poc",
+			"prometheus.io/port": "9779",
+			"prometheus.io/scrape": "true"
+		},
+		"creationTimestamp": "2019-01-27T05:25:10Z",
+		"labels": {
+			"app": "spring-boot-docker-poc",
+			"expose": "true",
+			"group": "com.sushilsingh27",
+			"provider": "fabric8",
+			"version": "0.0.1-SNAPSHOT"
+		},
+		"name": "spring-boot-docker-poc",
+		"namespace": "default",
+		"selfLink": "/api/v1/namespaces/default/services/spring-boot-docker-poc"
+	},
+	"spec": {
+		"externalName": "10.106.79.110",
+		"ports": [
+			{
+				"name": "http",
+				"port": 8080,
+				"protocol": "TCP",
+				"targetPort": 8080
+			}
+		],
+		"selector": {
+			"app": "spring-boot-docker-poc",
+			"group": "com.sushilsingh27",
+			"provider": "fabric8"
+		},
+		"sessionAffinity": "None",
+		"type": "ExternalName"
+	},
+	"status": {
+		"loadBalancer": {
+			
+		}
+	}
+}
