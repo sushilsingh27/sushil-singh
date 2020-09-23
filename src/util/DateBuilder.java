@@ -1,5 +1,6 @@
 package com.hcl.poc.date.util;
 
+import java.util.Date;
 import java.util.TreeMap;
 
 public class DateBuilder {
@@ -12,7 +13,7 @@ public class DateBuilder {
 //		builder.buildDateUints();
 //	}
 
-	public void buildDate(String dummydate) {
+	public String buildDate(String dummydate) {
 
 //		String dummydate = "03-07-2020 06:07:00 PM";
 //		String dummydate = "23-07-2123 06:07:00 AM";
@@ -27,30 +28,33 @@ public class DateBuilder {
 		String[] datearray = datestr.split("-");
 		String day = getExponent(datearray[0]);
 		String month = getMonth(datearray[1]);
-		
 		String year = datearray[2];
-		String yearprefix = year.substring(0, 2);
-		String yearsuffix = year.substring(2, 4);
-		Integer yearsuffixint = Integer.parseInt(yearsuffix);
-		String yearfinalstr=buildYearStr(yearprefix)+" "+buildYearStr(yearsuffix);
+		
+		
 		
 		String []timearray=timestr.split(":");
-		String hour=hour=buildYearStr(timearray[0]);
-		String minutes=buildYearStr(timearray[1]);
-		String seconds=buildYearStr(timearray[2]);
+		String hour=hour=numberToWord(timearray[0]);
+		String minutes=numberToWord(timearray[1]);
+		String seconds=numberToWord(timearray[2]);
+		String dayofweek=getDayOfWeek(Integer.parseInt(year),Integer.parseInt(datearray[1]) ,Integer.parseInt(datearray[0]));
 		
 		String finaldaywishes=daywish.equals("AM")?"Morning":"Evening";
-		String datefinalstr="Date : " + day+"-"+month+"-"+yearfinalstr;
-		String timefinalstr="Time : "+hour+" Hours"+"-"+minutes+" Minites"+"-"+seconds+" Seconds"+"-"+finaldaywishes;
+		String datefinalstr="Date : " + day+"-"+month+"-"+buildYearString(year);
+		String weekday= "Day of week : "+dayofweek;
+		String timefinalstr="Time : "+hour+" Hours"+" "+minutes+" Minites"+" "+seconds+" Seconds"+"-"+finaldaywishes;
 		
 		
 		System.out.println(datefinalstr);
 		System.out.println(timefinalstr);
+		System.out.println(weekday);
+		
+		String datetime=datefinalstr+"\n"+timefinalstr+"\n"+weekday;
 
+		return datetime;
 	}
 	
 	
-	String buildYearStr(String yearprefix) {
+	public String numberToWord(String yearprefix) {
 		
 		String year="";
 		String yearfirstchar = Character.toString(yearprefix.charAt(0));
@@ -67,13 +71,24 @@ public class DateBuilder {
 		if (yearprefixint>20 && yearscddigit!=0) {
 			
 			String twodigit=yearfirstchar+"0";
-			year=getYear(Integer.parseInt(twodigit)).toString();
+			year=getYear(Integer.parseInt(twodigit)).toString().trim();
 			year = year + " "+getYear(yearscddigit);
 		}
 		return year;
 		
 	}
 	
+	
+	
+	public String buildYearString(String year) {
+		String yearprefix = year.substring(0, 2);
+		String yearsuffix = year.substring(2, 4);
+//		Integer yearsuffixint = Integer.parseInt(yearsuffix);
+		String yearfinalstr=numberToWord(yearprefix)+" "+numberToWord(yearsuffix);
+		
+		return yearfinalstr;
+		
+	}
 
 	String getExponent(String dateunit) {
 
@@ -95,7 +110,7 @@ public class DateBuilder {
 		return dateunit + expostr;
 	}
 
-	String getMonth(String month) {
+	public String getMonth(String month) {
 		TreeMap<String, String> monthmap = new TreeMap<String, String>();
 		monthmap.put("01", "January");
 		monthmap.put("02", "Feburay");
@@ -114,9 +129,7 @@ public class DateBuilder {
 
 	}
 
-	String getYear(Integer year) {
-
-		
+	public String getYear(Integer year) {
 		
 		TreeMap<Integer, String> yearmap = new TreeMap<Integer, String>();
 		yearmap.put(0, "Zero");
@@ -129,7 +142,7 @@ public class DateBuilder {
 		yearmap.put(7, "Seven");
 		yearmap.put(8, "Eight");
 		yearmap.put(9, "Nine");
-		yearmap.put(10, "ten");
+		yearmap.put(10, "Ten");
 		yearmap.put(11, "Eleven");
 		yearmap.put(12, "Twelve");
 		yearmap.put(13, "Thirteen");
@@ -151,18 +164,30 @@ public class DateBuilder {
 		return yearmap.get(year);
 	}
 	
-	String getTime(String time) {
-		
-		String newtime=time;
-		String chkzero = Character.toString(time.charAt(0));
-		if(chkzero.equals("0")) {
-			newtime=Character.toString(time.charAt(1));
-		}
+	
+	
+	public String getDayOfWeek(int year,int month,int dt) {
 		
 		
-		return newtime;
+		Date date=new Date(year-1900,month-1,dt);
+		
+		String day=date.toString().substring(0, 4).trim();
+		
+		System.out.println("Substring is : "+day);
+		
+		System.out.println(date.toString());
+		
+		TreeMap<String, String> yearmap = new TreeMap<String, String>();
+		yearmap.put("Mon", "Monday");
+		yearmap.put("Tue", "Tuesday");
+		yearmap.put("Wed", "Wednesday");
+		yearmap.put("Thu", "Thursday");
+		yearmap.put("Fri", "Friday");
+		yearmap.put("Sat", "Saturday");
+		yearmap.put("Sun", "Sunday");
 		
 		
+		return yearmap.get(day);
 	}
 
 }
